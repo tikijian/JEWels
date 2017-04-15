@@ -1,6 +1,8 @@
 #pragma once
 #include <map>
+#include <vector>
 #include <string>
+#include <sstream>
 #include <SFML\Graphics.hpp>
 
 using namespace std;
@@ -13,7 +15,8 @@ public:
 
 	map<string, sf::Texture> textures;
 	void initialize();
+	sf::Texture get(const char* filename);
 
-	const static string textureNames[];
+	const static vector<string> textureNames;
 };
 

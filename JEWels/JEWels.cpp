@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <SFML\Graphics.hpp>
+#include "TextureManager.h"
 
 int main()
 {
@@ -7,10 +8,11 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(800, 800), "JEWels");
 	window.setFramerateLimit(30);
 
-	sf::Texture texJew;
-	texJew.loadFromFile("graphics/jew.png");
+	TextureManager tm;
+	tm.initialize();
+
 	sf::Sprite sprJew;
-	sprJew.setTexture(texJew);
+	sprJew.setTexture(tm.textures["jew.png"]);
 	sprJew.setPosition(0, 0);
 	sprJew.setScale(0.3f, 0.3f);
 
