@@ -15,7 +15,7 @@ public:
 
 	map<string, sf::Texture> textures;
 	void initialize();
-	sf::Texture get(const char* filename);
+	sf::Texture get(const string &filename);
 
 	const static vector<string> textureNames;
 };

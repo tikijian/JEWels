@@ -29,7 +29,7 @@ void TextureManager::initialize()
 	}
 }
 
-sf::Texture TextureManager::get(const char* filename)
+sf::Texture TextureManager::get(const string &filename)
 {
 	return textures[filename];
 }
