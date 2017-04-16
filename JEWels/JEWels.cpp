@@ -4,6 +4,8 @@
 #include "Board.h"
 #include "Score.h"
 
+using namespace std;
+
 int main()
 {
 	sf::Image icon;
@@ -28,6 +30,10 @@ int main()
 
 	Board board(&window);
 	Score score;
+
+	sf::Clock clock;
+	int stepTime = 0;
+	int stepDuration = 1000;
  
 	while (window.isOpen())
 	{
@@ -47,6 +53,24 @@ int main()
 			}
 		}
 
+		/*---------*/
+		// Updates
+		/*---------*/
+		sf::Time dt = clock.restart();
+
+		stepTime += dt.asMilliseconds();
+		if (stepTime >= stepDuration) {
+			// TODO: move down
+			rect.setPosition(rect.getPosition() + sf::Vector2f(.0f, 40.0f));
+			stepTime = 0;
+		}
+
+		//-----------
+
+
+		/*---------*/
+		// Rendering
+		/*---------*/	
 		window.clear(sf::Color::Black);
 
 		window.draw(sprJew);
@@ -55,6 +79,7 @@ int main()
 		window.draw(score.formatted());
 
 		window.display();
+		//-----------
 	}
 
     return 0;
