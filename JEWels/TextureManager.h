@@ -1,5 +1,5 @@
 #pragma once
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -13,7 +13,7 @@ public:
 	TextureManager();
 	~TextureManager();
 
-	map<string, sf::Texture> textures;
+	unordered_map<string, sf::Texture> textures;
 	void initialize();
 	sf::Texture get(const string &filename);
 

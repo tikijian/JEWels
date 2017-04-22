@@ -22,10 +22,10 @@ void TextureManager::initialize()
 		stringstream path; 
 		path << "graphics/";
 		path << textureNames[i];
-		sf::Texture texJew;
-		texJew.loadFromFile(path.str());
+		sf::Texture texture;
+		texture.loadFromFile(path.str());
 
-		textures[textureNames[i]] = texJew;
+		textures[textureNames[i]] = texture;
 	}
 }
 

@@ -3,6 +3,8 @@
 #include "TextureManager.h"
 #include "Board.h"
 #include "Score.h"
+#include "Gem.h"
+#include "Block.h"
 
 using namespace std;
 
@@ -20,16 +22,14 @@ int main()
 	
 	sf::Sprite sprJew;
 	sprJew.setTexture(tm.textures["jew.png"]); //TODO: why not tm.get()
+	//sprJew.setTexture(tm.get("jew.png"));
 	sprJew.setPosition(35, 50);
 	sprJew.setScale(0.3f, 0.3f);
 
-	sf::RectangleShape rect;
-	rect.setFillColor(sf::Color::Red);
-	rect.setSize(sf::Vector2f(40.0f, 40.0f));
-	rect.setPosition(300, 300);
-
-	Board board(&window);
+	Board board(&window);	
 	Score score;
+
+	Block block;
 
 	sf::Clock clock;
 	int stepTime = 0;
@@ -58,13 +58,7 @@ int main()
 		/*---------*/
 		sf::Time dt = clock.restart();
 
-		stepTime += dt.asMilliseconds();
-		if (stepTime >= stepDuration) {
-			// TODO: move down
-			rect.setPosition(rect.getPosition() + sf::Vector2f(.0f, 40.0f));
-			stepTime = 0;
-		}
-
+		block.update(&dt);
 		//-----------
 
 
@@ -75,9 +69,8 @@ int main()
 
 		window.draw(sprJew);
 		board.render();
-		window.draw(rect); 
 		window.draw(score.formatted());
-
+		block.render(&window);
 		window.display();
 		//-----------
 	}
