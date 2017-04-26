@@ -1,22 +1,26 @@
 #include "stdafx.h"
 #include "Board.h"
 
+using namespace sf;
 
-Board::Board(sf::RenderWindow* wnd)
+const sf::Vector2f Board::TOPLEFT = Vector2f(230.0f, 65.0f);
+const Vector2f Board::SIZE = Vector2f(520, 680);
+const sf::Vector2f Board::BOTTOMRIGHT = TOPLEFT + SIZE;
+
+Board::Board()
 {
-	this->window = wnd;
-	rect.setFillColor(sf::Color::Transparent);
-	rect.setSize(sf::Vector2f(520, 680));
-	rect.setOutlineColor(sf::Color(233, 233, 233));
+	rect.setFillColor(Color::Transparent);
+	rect.setSize(SIZE);
+	rect.setOutlineColor(Color(233, 233, 233));
 	rect.setOutlineThickness(2.0f);
-	rect.setPosition(230, 65);
+	rect.setPosition(TOPLEFT);
 }
 
 Board::~Board()
 {
 }
 
-void Board::render()
+void Board::draw(RenderTarget & target, RenderStates states) const
 {
-	window->draw(rect);
+	target.draw(rect);
 }

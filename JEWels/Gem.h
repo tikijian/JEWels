@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML\Graphics.hpp"
 
-class Gem
+class Gem : public sf::Drawable
 {
 
 public:
@@ -16,7 +16,7 @@ public:
 	Type type = Type::Red;
 	void setType(Type t);
 	void update(sf::Vector2f blockPosition, int offset);
-	void render(sf::RenderWindow* wnd);
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
 	void setColor(Type t);

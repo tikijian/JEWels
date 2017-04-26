@@ -31,6 +31,11 @@ void Gem::update(sf::Vector2f blockPosition, int offset)
 	rect.setPosition(blockPosition.x, blockPosition.y + (offset * SIZE));
 }
 
+void Gem::draw(sf::RenderTarget & target, sf::RenderStates states) const
+{
+	target.draw(rect);
+}
+
 // TODO: refactor to template?
 void Gem::setColor(Type t)
 {
@@ -55,9 +60,4 @@ void Gem::setColor(Type t)
 		break;
 	}
 
-}
-
-void Gem::render(sf::RenderWindow * wnd)
-{
-	wnd->draw(rect);
 }
