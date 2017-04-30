@@ -12,24 +12,27 @@ Score::Score()
 	text.setFillColor(sf::Color::White);
 	text.setCharacterSize(28);
 	text.setPosition(40, 250);
+	scoreText << std::setw(6) << std::setfill('0') << score;
+	text.setString(scoreText.str());
 }
 
 Score::~Score()
 {
 }
 
-void Score::add(int val)
+int Score::add(int val)
 {
 	score += val;
-}
-
-sf::Text Score::formatted()
-{
-	std::stringstream scoreText;
+	scoreText.str(std::string()); scoreText.clear();
 	scoreText << std::setw(6) << std::setfill('0') << score;
 	text.setString(scoreText.str());
-
-	return text;
+	return score;
 }
+
+void Score::draw(sf::RenderTarget & target, sf::RenderStates states) const
+{
+	target.draw(text);
+}
+
 
 

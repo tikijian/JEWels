@@ -71,7 +71,7 @@ int main()
 
 		window.draw(sprJew);
 		window.draw(board);
-		window.draw(score.formatted());
+		window.draw(score);
 		window.draw(block);
 		window.display();
 		//-----------

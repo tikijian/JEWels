@@ -4,19 +4,21 @@
 #include <sstream>
 #include <SFML\Graphics.hpp>
 
-class Score
+class Score : public sf::Drawable
 {
 private: 
 	sf::Font font;
+	std::stringstream scoreText;
+	int add(int val);
 public:
 	Score();
 	~Score();
 
 	int score = 0;
-	void add(int val);
-	int operator+=(int val) { return score += val; }
-	
 	sf::Text text;
-	sf::Text formatted();
+	int operator+=(int val) { return add(val); }
+	
+	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+
 };
 
