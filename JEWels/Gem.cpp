@@ -5,12 +5,12 @@ const float Gem::SIZE = 40.0f;
 
 Gem::Gem()
 {
-	Type t = static_cast<Type>(rand() % (int)Type::Magenta);
+	GemType t = static_cast<GemType>(rand() % (int)GemType::Magenta);
 	rect.setSize(sf::Vector2f(Gem::SIZE, Gem::SIZE));
 	setType(t);
 }
 
-Gem::Gem(Type t)
+Gem::Gem(GemType t)
 {
 	rect.setSize(sf::Vector2f(Gem::SIZE, Gem::SIZE));
 	setType(t);
@@ -20,9 +20,9 @@ Gem::~Gem()
 {
 }
 
-void Gem::setType(Type t)
+void Gem::setType(GemType t)
 {
-	this->type = t;
+	type = t;
 	setColor(t);
 }
 
@@ -37,23 +37,23 @@ void Gem::draw(sf::RenderTarget & target, sf::RenderStates states) const
 }
 
 // TODO: refactor to template?
-void Gem::setColor(Type t)
+void Gem::setColor(GemType t)
 {
 	switch (t)
 	{
-	case Type::Red:
+	case GemType::Red:
 		rect.setFillColor(sf::Color::Red);
 		break;
-	case Type::Blue:
+	case GemType::Blue:
 		rect.setFillColor(sf::Color::Blue);
 		break;
-	case Type::Green:
+	case GemType::Green:
 		rect.setFillColor(sf::Color::Green);
 		break;
-	case Type::Yellow:
+	case GemType::Yellow:
 		rect.setFillColor(sf::Color::Yellow);
 		break;
-	case Type::Magenta:
+	case GemType::Magenta:
 		rect.setFillColor(sf::Color::Magenta);
 		break;
 	default:
