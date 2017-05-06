@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML\Graphics.hpp"
 #include "Gem.h"
-#include "Board.h"
+#include "Constants.h"
 
 class Block : public sf::Drawable
 {
@@ -12,6 +12,7 @@ public:
 
 	sf::IntRect bounds;
 	sf::RectangleShape rect;
+	Gem gems[3];
 
 	void update(const sf::Time& dt);
 	void processInput(const sf::Event& event);
@@ -22,7 +23,6 @@ private:
 	int stepTime = 0;
 	int stepDuration = 1000;
 	bool canStep = true;
-	Gem gems[3];
 
 	void cycle();
 	void updateGems();

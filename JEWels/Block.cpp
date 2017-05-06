@@ -3,15 +3,13 @@
 
 using namespace sf;
 
-const float Block::STEP = 40.0f;
-
 Block::Block()
 {
 	rect.setPosition(Vector2f(390.0f, 65.0f));
 	rect.setOutlineColor(Color(200, 200, 200));
 	rect.setOutlineThickness(1.0f);
 	rect.setFillColor(Color::Transparent);
-	rect.setSize(Vector2f(Gem::SIZE, Gem::SIZE * 3));
+	rect.setSize(Vector2f(Constants::GEMSIZE, Constants::GEMSIZE * 3));
 }
 
 void Block::processInput(const Event& event)
@@ -25,11 +23,11 @@ void Block::processInput(const Event& event)
 	{
 	case Keyboard::Left:
 		if (checkBoardLeft())
-			rect.move(Vector2f(-STEP, .0f));
+			rect.move(Vector2f(-Constants::STEP, .0f));
 		break;
 	case Keyboard::Right:
 		if (checkBoardRight())
-			rect.move(Vector2f(STEP, .0f));
+			rect.move(Vector2f(Constants::STEP, .0f));
 		break;
 	default:
 		break;
@@ -66,17 +64,17 @@ void Block::updateGems()
 
 bool Block::checkBoardBottom()
 {
-	return (rect.getPosition().y + Gem::SIZE * 3) >= Board::BOTTOMRIGHT.y;
+	return (rect.getPosition().y + Constants::GEMSIZE * 3) >= Constants::BOTTOMRIGHT.y;
 }
 
 bool Block::checkBoardLeft()
 {
-	return rect.getPosition().x > Board::TOPLEFT.x;
+	return rect.getPosition().x > Constants::TOPLEFT.x;
 }
 
 bool Block::checkBoardRight()
 {
-	return rect.getPosition().x < (Board::BOTTOMRIGHT.x - Gem::SIZE);
+	return rect.getPosition().x < (Constants::BOTTOMRIGHT.x - Constants::GEMSIZE);
 }
 
 Block::~Block()

@@ -1,18 +1,16 @@
 #include "stdafx.h"
 #include "Gem.h"
 
-const float Gem::SIZE = 40.0f;
-
 Gem::Gem()
 {
 	GemType t = static_cast<GemType>(rand() % (int)GemType::Magenta);
-	rect.setSize(sf::Vector2f(Gem::SIZE, Gem::SIZE));
+	rect.setSize(sf::Vector2f(Constants::GEMSIZE, Constants::GEMSIZE));
 	setType(t);
 }
 
 Gem::Gem(GemType t)
 {
-	rect.setSize(sf::Vector2f(Gem::SIZE, Gem::SIZE));
+	rect.setSize(sf::Vector2f(Constants::GEMSIZE, Constants::GEMSIZE));
 	setType(t);
 }
 
@@ -28,7 +26,7 @@ void Gem::setType(GemType t)
 
 void Gem::update(sf::Vector2f blockPosition, int offset)
 {
-	rect.setPosition(blockPosition.x, blockPosition.y + (offset * SIZE));
+	rect.setPosition(blockPosition.x, blockPosition.y + (offset * Constants::GEMSIZE));
 }
 
 void Gem::draw(sf::RenderTarget & target, sf::RenderStates states) const

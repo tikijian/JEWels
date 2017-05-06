@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 {
-	srand(time(NULL));
+	srand(time(0));
 	sf::Image icon;
 	icon.loadFromFile("graphics/icon.png");
 	int windowStyle = !sf::Style::Resize | sf::Style::Titlebar | sf::Style::Close;
