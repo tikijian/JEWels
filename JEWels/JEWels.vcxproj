@@ -154,7 +154,6 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Constants.cpp" />
     <ClCompile Include="Gem.cpp" />
     <ClCompile Include="JEWels.cpp" />
     <ClCompile Include="Score.cpp" />

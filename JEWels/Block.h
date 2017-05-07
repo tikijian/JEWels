@@ -6,7 +6,6 @@
 class Block : public sf::Drawable
 {
 public:
-	static const float STEP;
 	Block();
 	~Block();
 

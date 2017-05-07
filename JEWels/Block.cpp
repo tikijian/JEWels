@@ -2,6 +2,7 @@
 #include "Block.h"
 
 using namespace sf;
+using namespace Constants;
 
 Block::Block()
 {
@@ -9,7 +10,7 @@ Block::Block()
 	rect.setOutlineColor(Color(200, 200, 200));
 	rect.setOutlineThickness(1.0f);
 	rect.setFillColor(Color::Transparent);
-	rect.setSize(Vector2f(Constants::GEMSIZE, Constants::GEMSIZE * 3));
+	rect.setSize(Vector2f(GEMSIZE, GEMSIZE * 3));
 }
 
 void Block::processInput(const Event& event)
@@ -23,11 +24,11 @@ void Block::processInput(const Event& event)
 	{
 	case Keyboard::Left:
 		if (checkBoardLeft())
-			rect.move(Vector2f(-Constants::STEP, .0f));
+			rect.move(Vector2f(-STEP, .0f));
 		break;
 	case Keyboard::Right:
 		if (checkBoardRight())
-			rect.move(Vector2f(Constants::STEP, .0f));
+			rect.move(Vector2f(STEP, .0f));
 		break;
 	default:
 		break;
@@ -64,17 +65,17 @@ void Block::updateGems()
 
 bool Block::checkBoardBottom()
 {
-	return (rect.getPosition().y + Constants::GEMSIZE * 3) >= Constants::BOTTOMRIGHT.y;
+	return (rect.getPosition().y + GEMSIZE * 3) >= BOTTOMRIGHT.y;
 }
 
 bool Block::checkBoardLeft()
 {
-	return rect.getPosition().x > Constants::TOPLEFT.x;
+	return rect.getPosition().x > TOPLEFT.x;
 }
 
 bool Block::checkBoardRight()
 {
-	return rect.getPosition().x < (Constants::BOTTOMRIGHT.x - Constants::GEMSIZE);
+	return rect.getPosition().x < (BOTTOMRIGHT.x - GEMSIZE);
 }
 
 Block::~Block()

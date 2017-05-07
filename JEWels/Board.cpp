@@ -2,12 +2,13 @@
 #include "Board.h"
 
 using namespace sf;
+using namespace Constants;
 
 void Board::resetBoard()
 {
-	for (int row = 0; row < Constants::ROWS; row++)
+	for (int row = 0; row < ROWS; row++)
 	{
-		for (int col = 0; col < Constants::COLS; col++)
+		for (int col = 0; col < COLS; col++)
 		{
 			board[row][col] = GemType::Empty;
 		}
@@ -16,18 +17,18 @@ void Board::resetBoard()
 
 Vector2i Board::getBoardIndex(const Vector2f & coords)
 {
-	int x = (int)((coords.x - Constants::TOPLEFT.x) / Constants::GEMSIZE);
-	int y = (int)((coords.y - Constants::TOPLEFT.y) / Constants::GEMSIZE);
+	int x = (int)((coords.x - TOPLEFT.x) / GEMSIZE);
+	int y = (int)((coords.y - TOPLEFT.y) / GEMSIZE);
 	return Vector2i(x, y);
 }
 
 Board::Board()
 {
 	rect.setFillColor(Color::Transparent);
-	rect.setSize(Constants::BOARDSIZE);
+	rect.setSize(BOARDSIZE);
 	rect.setOutlineColor(Color(233, 233, 233));
 	rect.setOutlineThickness(2.0f);
-	rect.setPosition(Constants::TOPLEFT);
+	rect.setPosition(TOPLEFT);
 
 	resetBoard();
 }

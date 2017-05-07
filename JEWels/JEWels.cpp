@@ -22,7 +22,6 @@ int main()
 	tm.initialize();
 	
 	sf::Sprite sprJew;
-	//sprJew.setTexture(tm.textures["jew.png"]); //TODO: why not tm.get()
 	sprJew.setTexture(tm.get("jew.png"));
 	sprJew.setPosition(35, 50);
 	sprJew.setScale(0.3f, 0.3f);

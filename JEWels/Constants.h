@@ -2,14 +2,13 @@
 #include "SFML\Graphics.hpp"
 
 
-class Constants
+namespace Constants
 {
-public:
-	static const sf::Vector2f TOPLEFT;
-	static const sf::Vector2f BOARDSIZE;
-	static const sf::Vector2f BOTTOMRIGHT;
-	static const int GEMSIZE;
-	static const int ROWS;
-	static const int COLS;
-	static const float STEP;
+	const sf::Vector2f TOPLEFT(230, 65);
+	const sf::Vector2f BOARDSIZE(520, 680);
+	const sf::Vector2f BOTTOMRIGHT = TOPLEFT + BOARDSIZE;
+	const int GEMSIZE = 40;
+	const int ROWS = 13;
+	const int COLS = 17;
+	const float STEP = 40.0f;
 };
