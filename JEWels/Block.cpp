@@ -3,31 +3,30 @@
 
 using namespace sf;
 using namespace Constants;
+using namespace helpers;
 
-Block::Block()
+
+Block::Block(BoardData &boardData)
 {
+	board = &boardData;
 	rect.setPosition(Vector2f(390.0f, 65.0f));
 	rect.setOutlineColor(Color(200, 200, 200));
 	rect.setOutlineThickness(1.0f);
 	rect.setFillColor(Color::Transparent);
-	rect.setSize(Vector2f(GEMSIZE, GEMSIZE * 3));
+	rect.setSize(Vector2f(GEMSIZE, HEIGHT));
 }
 
 void Block::processInput(const Event& event)
 {
-	if (!isActive) return;
-
-	if (checkBoardBottom())
-		isActive = false;
 
 	switch (event.key.code)
 	{
 	case Keyboard::Left:
-		if (checkBoardLeft())
+		if (canMoveLeft())
 			rect.move(Vector2f(-STEP, .0f));
 		break;
 	case Keyboard::Right:
-		if (checkBoardRight())
+		if (canMoveRight())
 			rect.move(Vector2f(STEP, .0f));
 		break;
 	default:
@@ -49,7 +48,12 @@ void Block::update(const Time& dt)
 
 	stepTime += dt.asMilliseconds();
 	if (stepTime >= stepDuration) {
-		rect.move(Vector2f(.0f, 40.0f));
+		if (canMoveBottom()) {
+			rect.move(Vector2f(.0f, GEMSIZE));
+		} else {
+			// commitBlock!
+		}
+			
 		stepTime = 0;
 	}
 
@@ -63,19 +67,69 @@ void Block::updateGems()
 	}
 }
 
-bool Block::checkBoardBottom()
+bool Block::canMoveBottom()
 {
-	return (rect.getPosition().y + GEMSIZE * 3) >= BOTTOMRIGHT.y;
+	float xPos = rect.getPosition().x;
+	float offsetYPos = (rect.getPosition().y + HEIGHT);
+	if (offsetYPos >= BOTTOMRIGHT.y)
+		return false;
+	
+	Vector2i bottomCell = getBoardIndex(Vector2f(xPos, offsetYPos));
+	int iX = bottomCell.x; int iY = bottomCell.y;
+	if (board->at(iX, iY) == GemType::Empty) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
-bool Block::checkBoardLeft()
+bool Block::canMoveLeft()
 {
-	return rect.getPosition().x > TOPLEFT.x;
+	float xPos = rect.getPosition().x;
+	float yPos = rect.getPosition().y;
+	if (xPos <= TOPLEFT.x)
+		return false;
+
+	bool canMove = true;
+	// get left cell X + offset
+	float leftCellX = xPos - GEMSIZE;
+	// iterate through 3 cells on the left side
+	for (int offsetY = 0; offsetY < 3; offsetY++)
+	{
+		float leftCellY = yPos + (offsetY * GEMSIZE);
+		Vector2i targetCell = getBoardIndex(Vector2f(leftCellX, leftCellY));
+		if (board->at(targetCell) != GemType::Empty) {
+			canMove = false;
+			break;
+		}
+	}
+	
+	return canMove;
 }
 
-bool Block::checkBoardRight()
+bool Block::canMoveRight()
 {
-	return rect.getPosition().x < (BOTTOMRIGHT.x - GEMSIZE);
+	float xPos = rect.getPosition().x;
+	float yPos = rect.getPosition().y;
+	if (xPos >= (BOTTOMRIGHT.x - GEMSIZE))
+		return false;
+
+	bool canMove = true;
+	// get left cell X + offset
+	float rightCellX = xPos + GEMSIZE;
+	// iterate through 3 cells on the right side
+	for (int offsetY = 0; offsetY < 3; offsetY++)
+	{
+		float rightCellY = yPos + (offsetY * GEMSIZE);
+		Vector2i targetCell = getBoardIndex(Vector2f(rightCellX, rightCellY));
+		if (board->at(targetCell) != GemType::Empty) {
+			canMove = false;
+			break;
+		}
+	}
+	
+	return canMove;
 }
 
 Block::~Block()

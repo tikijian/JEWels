@@ -3,34 +3,17 @@
 
 using namespace sf;
 using namespace Constants;
+using namespace helpers;
 
-void Board::resetBoard()
-{
-	for (int row = 0; row < ROWS; row++)
-	{
-		for (int col = 0; col < COLS; col++)
-		{
-			board[row][col] = GemType::Empty;
-		}
-	}
-}
-
-Vector2i Board::getBoardIndex(const Vector2f & coords)
-{
-	int x = (int)((coords.x - TOPLEFT.x) / GEMSIZE);
-	int y = (int)((coords.y - TOPLEFT.y) / GEMSIZE);
-	return Vector2i(x, y);
-}
-
-Board::Board()
+Board::Board():
+	board(true), // add (true) for debug fill
+	block(board)
 {
 	rect.setFillColor(Color::Transparent);
 	rect.setSize(BOARDSIZE);
 	rect.setOutlineColor(Color(233, 233, 233));
 	rect.setOutlineThickness(2.0f);
 	rect.setPosition(TOPLEFT);
-
-	resetBoard();
 }
 
 Board::~Board()
@@ -39,6 +22,7 @@ Board::~Board()
 
 void Board::update(const Time & dt)
 {
+	block.update(dt);
 }
 
 void Board::commitBlock(Block & block)
@@ -48,11 +32,17 @@ void Board::commitBlock(Block & block)
 	{
 		Vector2f gemPosition = gems[i].getPosition();
 		Vector2i boardCoords = getBoardIndex(gemPosition);
-		board[boardCoords.x][boardCoords.y] = gems[i].type;
+		board.set(
+			gems[i].type,
+			boardCoords.x,
+			boardCoords.y
+		);
 	}
 }
 
 void Board::draw(RenderTarget & target, RenderStates states) const
 {
 	target.draw(rect);
+	target.draw(score);
+	target.draw(block);
 }

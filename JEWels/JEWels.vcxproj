@@ -143,9 +143,11 @@
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardData.h" />
     <ClInclude Include="Gem.h" />
     <ClInclude Include="GemTypes.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Helpers.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -154,7 +156,9 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="BoardData.cpp" />
     <ClCompile Include="Gem.cpp" />
+    <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="JEWels.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="stdafx.cpp">

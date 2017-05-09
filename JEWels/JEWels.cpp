@@ -27,9 +27,6 @@ int main()
 	sprJew.setScale(0.3f, 0.3f);
 
 	Board board;	
-	Score score;
-
-	Block block;
 
 	sf::Clock clock;
 	int stepTime = 0;
@@ -51,7 +48,7 @@ int main()
 					window.close();
 				}
 
-				block.processInput(event);
+				board.block.processInput(event);
 			}
 		}
 
@@ -60,7 +57,7 @@ int main()
 		/*---------*/
 		sf::Time dt = clock.restart();
 
-		block.update(dt);
+		board.update(dt);
 		//-----------
 
 
@@ -71,8 +68,6 @@ int main()
 
 		window.draw(sprJew);
 		window.draw(board);
-		window.draw(score);
-		window.draw(block);
 		window.display();
 		//-----------
 	}

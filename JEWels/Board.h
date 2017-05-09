@@ -4,24 +4,27 @@
 #include "Gem.h"
 #include "Block.h"
 #include "Constants.h"
+#include "Score.h"
+#include "Helpers.h"
+#include "BoardData.h"
 
 using namespace sf;
 
 class Board : public sf::Drawable
 {
-	void resetBoard();
-
+	void drawBoard();
 public:
-	static Vector2i getBoardIndex(const Vector2f & coords);
-
 	Board();
 	~Board();
 
 	sf::RectangleShape rect;
-	GemType board[13][17];
+	Block block;
+	Score score;
+	BoardData board;
 
 	void update(const Time &dt);
 	void commitBlock(Block &block);
+	void resetBoard() { board.reset(); };
 	virtual void draw(RenderTarget & target, RenderStates states) const;
 };
 
