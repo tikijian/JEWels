@@ -5,11 +5,12 @@ using namespace sf;
 using namespace Constants;
 using namespace helpers;
 
+const Vector2f startPosition(390.0f, 65.0f);
 
 Block::Block(BoardData &boardData)
 {
 	board = &boardData;
-	rect.setPosition(Vector2f(390.0f, 65.0f));
+	rect.setPosition(startPosition);
 	rect.setOutlineColor(Color(200, 200, 200));
 	rect.setOutlineThickness(1.0f);
 	rect.setFillColor(Color::Transparent);
@@ -18,7 +19,6 @@ Block::Block(BoardData &boardData)
 
 void Block::processInput(const Event& event)
 {
-
 	switch (event.key.code)
 	{
 	case Keyboard::Left:
@@ -44,14 +44,13 @@ void Block::draw(sf::RenderTarget & target, sf::RenderStates states) const
 
 void Block::update(const Time& dt) 
 {
-	if (!isActive) return;
-
 	stepTime += dt.asMilliseconds();
 	if (stepTime >= stepDuration) {
 		if (canMoveBottom()) {
 			rect.move(Vector2f(.0f, GEMSIZE));
 		} else {
-			// commitBlock!
+			commitBlock();
+			reset();
 		}
 			
 		stepTime = 0;
@@ -64,6 +63,24 @@ void Block::updateGems()
 {
 	for (int i = 0; i <= 2; i++) {
 		gems[i].update(rect.getPosition(), i);
+	}
+}
+
+void Block::reset()
+{
+	rect.setPosition(startPosition);
+
+	for (int i = 0; i <= 2; i++) {
+		GemType newType = static_cast<GemType>(rand() % (int)GemType::Magenta);
+		gems[i].setType(newType);
+	}
+}
+
+void Block::commitBlock()
+{
+	for (int i = 0; i <= 2; i++) {
+		Vector2i index = getBoardIndex(gems[i].getPosition());
+		board->set(gems[i].type, index);
 	}
 }
 

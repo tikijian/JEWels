@@ -19,8 +19,6 @@ public:
 	void update(const sf::Time& dt);
 	void processInput(const sf::Event& event);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
-	bool isActive = true;
 private: 
 	int stepTime = 0;
 	int stepDuration = 1000;
@@ -33,5 +31,7 @@ private:
 	bool canMoveBottom();
 	bool canMoveLeft();
 	bool canMoveRight();
+	void commitBlock();
+	void reset();
 };
 

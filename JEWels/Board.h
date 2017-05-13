@@ -12,7 +12,6 @@ using namespace sf;
 
 class Board : public sf::Drawable
 {
-	void drawBoard(RenderTarget & target);
 public:
 	Board();
 	~Board();
@@ -23,7 +22,6 @@ public:
 	BoardData board;
 
 	void update(const Time &dt);
-	void commitBlock(Block &block);
 	void resetBoard() { board.reset(); };
 	virtual void draw(RenderTarget & target, RenderStates states) const;
 };

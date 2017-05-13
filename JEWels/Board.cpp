@@ -25,21 +25,6 @@ void Board::update(const Time & dt)
 	block.update(dt);
 }
 
-void Board::commitBlock(Block & block)
-{
-	Gem * gems = &block.gems[0];
-	for (int i = 0; i < 3; i++)
-	{
-		Vector2f gemPosition = gems[i].getPosition();
-		Vector2i boardCoords = getBoardIndex(gemPosition);
-		board.set(
-			gems[i].type,
-			boardCoords.x,
-			boardCoords.y
-		);
-	}
-}
-
 void Board::draw(RenderTarget & target, RenderStates states) const
 {
 	target.draw(rect);
