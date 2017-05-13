@@ -54,6 +54,9 @@ void Gem::setColor(GemType t)
 	case GemType::Magenta:
 		rect.setFillColor(sf::Color::Magenta);
 		break;
+	case GemType::Empty:
+		rect.setFillColor(sf::Color::Transparent);
+		break;
 	default:
 		break;
 	}

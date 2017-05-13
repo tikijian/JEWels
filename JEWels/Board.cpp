@@ -44,5 +44,6 @@ void Board::draw(RenderTarget & target, RenderStates states) const
 {
 	target.draw(rect);
 	target.draw(score);
+	target.draw(board);
 	target.draw(block);
 }

@@ -12,7 +12,7 @@ using namespace sf;
 
 class Board : public sf::Drawable
 {
-	void drawBoard();
+	void drawBoard(RenderTarget & target);
 public:
 	Board();
 	~Board();

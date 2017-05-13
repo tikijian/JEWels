@@ -18,6 +18,8 @@ public:
 	void update(sf::Vector2f blockPosition, int offset);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+	bool operator==(GemType t) { return type == t; }
+	bool operator!=(GemType t) { return type != t; }
 private:
 	void setColor(GemType t);
 

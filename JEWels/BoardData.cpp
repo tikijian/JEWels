@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "BoardData.h"
+#include "Helpers.h"
 
+using namespace Constants;
+using namespace helpers;
 
 BoardData::BoardData()
 {
@@ -14,35 +17,53 @@ BoardData::BoardData(bool debug)
 		return;
 	}
 
-	data[2][5] = GemType::Red;
-	data[2][6] = GemType::Red;
-	data[2][7] = GemType::Red;
-	data[2][8] = GemType::Red;
-	data[2][9] = GemType::Red;
-	data[2][10] = GemType::Red;
-	
-	data[7][9] = GemType::Blue;
-	data[7][10] = GemType::Blue;
-	data[7][11] = GemType::Blue;
-	data[7][12] = GemType::Blue;
-	data[7][13] = GemType::Blue;
-	data[7][14] = GemType::Blue;
+	set(GemType::Red, 3, 5);
+	set(GemType::Blue, 3, 6);
+	set(GemType::Yellow, 3, 7);
+	set(GemType::Red, 3, 8);
+	set(GemType::Red, 3, 9);
+	set(GemType::Red, 6, 10);
+	set(GemType::Red, 6, 11);
+	set(GemType::Blue, 6, 12);
+	set(GemType::Magenta, 6, 13);
+	set(GemType::Yellow, 6, 14);
+	set(GemType::Green, 6, 15);
 }
 
 void BoardData::reset()
 {
-	for (int row = 0; row < Constants::ROWS; row++)
+	for (int row = 0; row < ROWS; row++)
 	{
-		for (int col = 0; col < Constants::COLS; col++)
+		for (int col = 0; col < COLS; col++)
 		{
 			set(GemType::Empty, row, col);
 		}
 	}
 }
 
+void BoardData::set(GemType type, int x, int y)
+{
+	Gem gem(type);
+	gem.rect.setPosition( getScreenCoords(sf::Vector2i(x, y)) );
+	data[x][y] = gem;
+}
+
+void BoardData::set(GemType type, sf::Vector2i index)
+{
+	Gem gem(type);
+	gem.rect.setPosition( getScreenCoords(index) );
+	data[index.x][index.y] = gem;
+}
+
 void BoardData::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-
+	for (int row = 0; row < ROWS; row++)
+	{
+		for (int col = 0; col < COLS; col++)
+		{
+			target.draw(data[row][col]);
+		}
+	}
 }
 
 BoardData::~BoardData()
