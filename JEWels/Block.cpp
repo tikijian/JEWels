@@ -39,7 +39,7 @@ void Block::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	for (int i = 0; i <= 2; i++) {
 		target.draw(gems[i]);
 	}
-	target.draw(rect);
+	//target.draw(rect);
 }
 
 void Block::update(const Time& dt) 
@@ -92,8 +92,7 @@ bool Block::canMoveBottom()
 		return false;
 	
 	Vector2i bottomCell = getBoardIndex(Vector2f(xPos, offsetYPos));
-	int iX = bottomCell.x; int iY = bottomCell.y;
-	if (board->at(iX, iY) == GemType::Empty) {
+	if (board->at(bottomCell) == GemType::Empty) {
 		return true;
 	}
 	else {

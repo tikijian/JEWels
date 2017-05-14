@@ -1,16 +1,21 @@
 #include "stdafx.h"
 #include "Gem.h"
+#include "TextureManager.h"
 
 Gem::Gem()
 {
 	GemType t = static_cast<GemType>(rand() % (int)GemType::Magenta);
 	rect.setSize(sf::Vector2f(Constants::GEMSIZE, Constants::GEMSIZE));
+	TextureManager & tm = TextureManager::Instance();
+	rect.setTexture(&tm.get("gems.png"));
 	setType(t);
 }
 
 Gem::Gem(GemType t)
 {
 	rect.setSize(sf::Vector2f(Constants::GEMSIZE, Constants::GEMSIZE));
+	TextureManager & tm = TextureManager::Instance();
+	rect.setTexture(&tm.get("gems.png"));
 	setType(t);
 }
 
@@ -34,28 +39,29 @@ void Gem::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	target.draw(rect);
 }
 
-// TODO: refactor to template?
 void Gem::setColor(GemType t)
 {
+	using namespace sf;
+
 	switch (t)
 	{
 	case GemType::Red:
-		rect.setFillColor(sf::Color::Red);
+		rect.setTextureRect(IntRect(72, 3, 16, 16));
 		break;
 	case GemType::Blue:
-		rect.setFillColor(sf::Color::Blue);
+		rect.setTextureRect(IntRect(89, 3, 16, 16));
 		break;
 	case GemType::Green:
-		rect.setFillColor(sf::Color::Green);
+		rect.setTextureRect(IntRect(36, 3, 16, 16));
 		break;
 	case GemType::Yellow:
-		rect.setFillColor(sf::Color::Yellow);
+		rect.setTextureRect(IntRect(2, 2, 16, 16));
 		break;
 	case GemType::Magenta:
-		rect.setFillColor(sf::Color::Magenta);
+		rect.setTextureRect(IntRect(54, 3, 16, 16));
 		break;
 	case GemType::Empty:
-		rect.setFillColor(sf::Color::Transparent);
+		rect.setTextureRect(IntRect(106, 21, 16, 16));
 		break;
 	default:
 		break;

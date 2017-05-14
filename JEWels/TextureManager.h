@@ -9,13 +9,19 @@ using namespace std;
 
 class TextureManager
 {
-public:
+private: 
 	TextureManager();
 	~TextureManager();
+public:
+	static TextureManager & Instance()
+	{
+		static TextureManager s;
+		return s;
+	}
 
 	unordered_map<string, sf::Texture> textures;
 	void initialize();
-	sf::Texture& get(const string &filename);
+	const sf::Texture& get(const string &filename);
 
 	const static vector<string> textureNames;
 };

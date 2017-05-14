@@ -18,8 +18,7 @@ int main()
 	window.setFramerateLimit(30);
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
-	TextureManager tm;
-	tm.initialize();
+	TextureManager& tm = TextureManager::Instance();
 	
 	sf::Sprite sprJew;
 	sprJew.setTexture(tm.get("jew.png"));
