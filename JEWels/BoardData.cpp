@@ -37,22 +37,20 @@ void BoardData::reset()
 		for (int col = 0; col < COLS; col++)
 		{
 			set(GemType::Empty, row, col);
+			sf::Vector2f position = getScreenCoords(sf::Vector2i(row, col));
+			at(row, col).setPosition(position);
 		}
 	}
 }
 
 void BoardData::set(GemType type, int x, int y)
 {
-	Gem gem(type);
-	gem.rect.setPosition( getScreenCoords(sf::Vector2i(x, y)) );
-	data[x][y] = gem;
+	at(x, y).setType(type);
 }
 
-void BoardData::set(GemType type, sf::Vector2i index)
+void BoardData::set(GemType type, const sf::Vector2i & index)
 {
-	Gem gem(type);
-	gem.rect.setPosition( getScreenCoords(index) );
-	data[index.x][index.y] = gem;
+	at(index).setType(type);
 }
 
 void BoardData::draw(sf::RenderTarget & target, sf::RenderStates states) const

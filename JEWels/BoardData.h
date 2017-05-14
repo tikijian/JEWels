@@ -12,9 +12,9 @@ public:
 	~BoardData();
 
 	Gem & at(int x, int y) { return data[x][y]; }
-	Gem & at(sf::Vector2i index) { return data[index.x][index.y]; }
+	Gem & at(const sf::Vector2i &index) { return data[index.x][index.y]; }
 	void set(GemType t, int x, int y);
-	void set(GemType t, sf::Vector2i index);
+	void set(GemType t, const sf::Vector2i & index);
 	void reset();
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const;

@@ -14,6 +14,7 @@ public:
 	GemType type;
 	sf::RectangleShape rect;
 	sf::Vector2f getPosition() { return rect.getPosition(); }
+	void setPosition(const sf::Vector2f & pos) { rect.setPosition(pos); }
 	void setType(GemType t);
 	void update(sf::Vector2f blockPosition, int offset);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
