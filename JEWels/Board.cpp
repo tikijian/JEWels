@@ -49,6 +49,7 @@ void Board::update(const Time & dt)
 		} else {
 			commitBlock();
 			reset();
+			score += 15;
 		}
 			
 		stepTime = 0;
