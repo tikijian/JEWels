@@ -23,6 +23,17 @@ public:
 
 	void update(const Time &dt);
 	void resetBoard() { board.reset(); };
+	void processInput(const sf::Event& event);
 	virtual void draw(RenderTarget & target, RenderStates states) const;
+private:
+	int stepTime = 0;
+	int stepDuration = 800;
+	bool canStep = true;
+
+	bool canMoveBottom();
+	bool canMoveLeft();
+	bool canMoveRight();
+	void commitBlock();
+	void reset();
 };
 

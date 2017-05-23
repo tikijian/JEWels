@@ -11,4 +11,5 @@ namespace Constants
 	const int ROWS = 13;
 	const int COLS = 17;
 	const float STEP = 40.0f;
+	const float BLOCK_HEIGHT = 120.0f;
 };

@@ -47,7 +47,7 @@ int main()
 					window.close();
 				}
 
-				board.block.processInput(event);
+				board.processInput(event);
 			}
 		}
 

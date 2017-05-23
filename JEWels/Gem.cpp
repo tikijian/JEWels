@@ -36,7 +36,8 @@ void Gem::update(sf::Vector2f blockPosition, int offset)
 
 void Gem::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	target.draw(rect);
+	if (type != GemType::Empty)
+		target.draw(rect);
 }
 
 void Gem::setColor(GemType t)
@@ -59,9 +60,6 @@ void Gem::setColor(GemType t)
 		break;
 	case GemType::Magenta:
 		rect.setTextureRect(IntRect(54, 3, 16, 16));
-		break;
-	case GemType::Empty:
-		rect.setTextureRect(IntRect(106, 21, 16, 16));
 		break;
 	default:
 		break;

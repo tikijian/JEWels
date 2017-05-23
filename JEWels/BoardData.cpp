@@ -17,17 +17,17 @@ BoardData::BoardData(bool debug)
 		return;
 	}
 
-	set(GemType::Red, 3, 5);
-	set(GemType::Blue, 3, 6);
-	set(GemType::Yellow, 3, 7);
-	set(GemType::Red, 3, 8);
-	set(GemType::Red, 3, 9);
-	set(GemType::Red, 6, 10);
-	set(GemType::Red, 6, 11);
-	set(GemType::Blue, 6, 12);
-	set(GemType::Magenta, 6, 13);
-	set(GemType::Yellow, 6, 14);
-	set(GemType::Green, 6, 15);
+	set(GemType::Red, 1, 16);
+	set(GemType::Blue, 1, 15);
+	set(GemType::Yellow, 1, 14);
+	set(GemType::Red, 1, 13);
+	set(GemType::Red, 2, 16);
+	set(GemType::Green, 2, 15);
+	set(GemType::Yellow, 2, 14);
+	set(GemType::Blue, 3, 16);
+	set(GemType::Magenta, 3, 15);
+	set(GemType::Yellow, 4, 16);
+	set(GemType::Green, 8, 10);
 }
 
 void BoardData::reset()
