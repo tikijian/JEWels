@@ -35,6 +35,8 @@ void Board::processInput(const Event& event)
 		if (canMoveRight())
 			block.move(Vector2f(STEP, .0f));
 		break;
+	case Keyboard::Space:
+		block.cycle();
 	default:
 		break;
 	}

@@ -20,6 +20,14 @@ void Block::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	//target.draw(rect);
 }
 
+void Block::cycle()
+{
+	Gem temp = gems[2];
+	gems[2] = gems[1];
+	gems[1] = gems[0];
+	gems[0] = temp;
+}
+
 void Block::resetGems()
 {
 	for (int i = 0; i <= 2; i++) {
