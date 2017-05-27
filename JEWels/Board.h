@@ -28,6 +28,7 @@ public:
 private:
 	int stepTime = 0;
 	int stepDuration = 800;
+	int lastKnownStepDuration = stepDuration;
 	bool canStep = true;
 
 	bool canMoveBottom();

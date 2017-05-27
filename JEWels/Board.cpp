@@ -6,6 +6,7 @@ using namespace Constants;
 using namespace helpers;
 
 const Vector2f startPosition(390.0f, 65.0f);
+const int FALL_SPEED = 30;
 
 Board::Board():
 	board(true) // add (true) for debug fill
@@ -34,6 +35,13 @@ void Board::processInput(const Event& event)
 	case Keyboard::Right:
 		if (canMoveRight())
 			block.move(Vector2f(STEP, .0f));
+		break;
+	case Keyboard::Down:
+		// speed up falling speed on DOWN
+		if (block.isFalling) break;
+		block.isFalling = true;
+		lastKnownStepDuration = stepDuration;
+		stepDuration = FALL_SPEED;
 		break;
 	case Keyboard::Space:
 		block.cycle();
@@ -81,6 +89,11 @@ void Board::commitBlock()
 		Vector2i index = getBoardIndex(gems[i].getPosition());
 		board.set(gems[i].type, index);
 	}
+
+	if (block.isFalling) {
+		block.isFalling = false;
+		stepDuration = lastKnownStepDuration; // restore falling speed when fall process is ended
+	}
 }
 
 bool Board::canMoveBottom()
@@ -101,6 +114,8 @@ bool Board::canMoveBottom()
 
 bool Board::canMoveLeft()
 {
+	if (block.isFalling) return false;
+
 	float xPos = block.getPosition().x;
 	float yPos = block.getPosition().y;
 	if (xPos <= TOPLEFT.x)
@@ -125,6 +140,8 @@ bool Board::canMoveLeft()
 
 bool Board::canMoveRight()
 {
+	if (block.isFalling) return false;
+
 	float xPos = block.getPosition().x;
 	float yPos = block.getPosition().y;
 	if (xPos >= (BOTTOMRIGHT.x - GEMSIZE))
