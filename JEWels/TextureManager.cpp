@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include <iostream>
 
+
 const vector<string> TextureManager::textureNames = {
 	"jew.png"
 };
@@ -12,7 +13,7 @@ TextureManager::TextureManager()
 	// manually load gems spritesheet
 	// convert pink background to transparent color
 	sf::Image image;
-	image.loadFromFile("graphics/gems.png");
+	image.loadFromFile(resourcePath("graphics/gems.png"));
 	image.createMaskFromColor(sf::Color(237, 0, 235));
 
 	sf::Texture gems;
@@ -34,7 +35,8 @@ void TextureManager::initialize()
 		path << "graphics/";
 		path << textureNames[i];
 		sf::Texture texture;
-		texture.loadFromFile(path.str());
+        const char* finalPath = path.str().c_str();
+        texture.loadFromFile(resourcePath(finalPath));
 
 		textures[textureNames[i]] = texture;
 	}

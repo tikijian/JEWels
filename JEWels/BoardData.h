@@ -1,7 +1,7 @@
 #pragma once
 #include "Constants.h"
 #include "GemTypes.h"
-#include "SFML\Graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include "Gem.h"
 
 class BoardData : public sf::Drawable {

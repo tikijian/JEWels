@@ -1,10 +1,11 @@
 #include "stdafx.h"
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include "TextureManager.h"
 #include "Board.h"
 #include "Score.h"
 #include "Gem.h"
 #include "Block.h"
+#include "ResourcePath.hpp"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ int main()
 {
 	srand(time(0));
 	sf::Image icon;
-	icon.loadFromFile("graphics/icon.png");
+	icon.loadFromFile(resourcePath("graphics/icon.png"));
 	int windowStyle = !sf::Style::Resize | sf::Style::Titlebar | sf::Style::Close;
 	sf::RenderWindow window(sf::VideoMode(800, 800), "JEWels", windowStyle);
 	window.setFramerateLimit(30);

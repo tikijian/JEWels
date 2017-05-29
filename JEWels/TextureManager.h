@@ -3,7 +3,8 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include "ResourcePath.hpp"
 
 using namespace std;
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 class Score : public sf::Drawable
 {

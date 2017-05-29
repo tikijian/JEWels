@@ -1,5 +1,5 @@
 #pragma once
-#include "SFML\Graphics.hpp"
+#include <SFML/Graphics.hpp>
 #include "Gem.h"
 #include "Constants.h"
 #include "GemTypes.h"
