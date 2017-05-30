@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Board.h"
 
 using namespace sf;
@@ -58,6 +58,7 @@ void Board::update(const Time & dt)
 			block.move(Vector2f(.0f, GEMSIZE));
 		} else {
 			commitBlock();
+			board.checkMatches();
 			reset();
 			score += 15;
 		}
@@ -163,5 +164,3 @@ bool Board::canMoveRight()
 	
 	return canMove;
 }
-
-

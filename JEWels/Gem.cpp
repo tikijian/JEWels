@@ -34,10 +34,16 @@ void Gem::update(sf::Vector2f blockPosition, int offset)
 	rect.setPosition(blockPosition.x, blockPosition.y + (offset * Constants::GEMSIZE));
 }
 
+void Gem::destroy()
+{
+	setType(GemType::Empty);
+	//TODO: destruction animation
+}
+
 void Gem::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	if (type != GemType::Empty)
-		target.draw(rect);
+	if (type == GemType::Empty) return;
+	target.draw(rect);
 }
 
 void Gem::setColor(GemType t)
