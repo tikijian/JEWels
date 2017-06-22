@@ -9,7 +9,7 @@ const Vector2f startPosition(390.0f, 65.0f);
 const int FALL_SPEED = 30;
 
 Board::Board():
-	board(true) // add (true) for debug fill
+	board(false) // add (true) for debug fill
 {
 	rect.setFillColor(Color::Transparent);
 	rect.setSize(BOARDSIZE);
@@ -58,9 +58,9 @@ void Board::update(const Time & dt)
 			block.move(Vector2f(.0f, GEMSIZE));
 		} else {
 			commitBlock();
-			board.checkMatches();
-			reset();
+			resetBlock();
 			score += 15;
+			board.update();
 		}
 			
 		stepTime = 0;
@@ -77,7 +77,7 @@ void Board::draw(RenderTarget & target, RenderStates states) const
 	target.draw(block);
 }
 
-void Board::reset()
+void Board::resetBlock()
 {
 	block.setPosition(startPosition);
 	block.resetGems();

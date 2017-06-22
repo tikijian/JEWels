@@ -37,6 +37,7 @@ void Gem::update(sf::Vector2f blockPosition, int offset)
 void Gem::destroy()
 {
 	setType(GemType::Empty);
+	forDestruction = false;
 	//TODO: destruction animation
 }
 

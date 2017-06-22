@@ -35,6 +35,6 @@ private:
 	bool canMoveLeft();
 	bool canMoveRight();
 	void commitBlock();
-	void reset();
+	void resetBlock();
 };
 
