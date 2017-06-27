@@ -93,8 +93,7 @@ void BoardData::checkMatches()
 			// for each direction
 			for (int di = 0; di < 4; di++)
 			{
-				Direction & dir = directions[di];
-				checkMatchThree(dir, gem, index);
+				checkMatchThree(directions[di], gem, index);
 			}
 		}
 	}
