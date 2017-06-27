@@ -7,15 +7,15 @@ using namespace sf;
 using namespace Constants;
 using namespace helpers;
 
-Direction directions[8] = {
-	Direction(0, -1), // ↑
+Direction directions[4] = {
+	//Direction(0, -1), // ↑
 	Direction(1, -1), // ↗
 	Direction(1, 0),  // →
 	Direction(1, 1),  // ↘
 	Direction(0, 1),  // ↓
-	Direction(-1, 1), // ↙ 
-	Direction(-1, 0), // ←
-	Direction(-1, -1),// ↖ 
+	//Direction(-1, 1), // ↙ 
+	//Direction(-1, 0), // ←
+	//Direction(-1, -1),// ↖ 
 };
 
 bool no_needToCheckDirection(const Direction&, const BoardIndex&);
@@ -90,56 +90,62 @@ void BoardData::checkMatches()
 
 			BoardIndex index(row, col);
 
-			//std::cout << "Cheking optimization - ----------- ---" << std::endl;
 			// for each direction
-			for (int di = 0; di < 8; di++)
+			for (int di = 0; di < 4; di++)
 			{
-				//std::cout << "Position " << index.x << ":" << index.y << " no need? = " << no_needToCheckDirection(directions[di], index) << std::endl;
-				// check if it is not necessary to call check procedure
 				Direction & dir = directions[di];
-				if (no_needToCheckDirection(dir, index))
-					continue;
-
-				checkNextCell(dir, gem, index);
-				dir,detectedBlocks = 0;
+				checkMatchThree(dir, gem, index);
 			}
 		}
 	}
 }
 
+bool BoardData::checkMatchThree(Direction & dir, Gem & currentGem, const BoardIndex & currentIndex) {
+	// direction and boardIndex is aliases for Vector2i. So we just add direction vector to index vector
+	BoardIndex nextIndex = currentIndex + dir.vector;
+	BoardIndex secondIndex = nextIndex + dir.vector;
+
+	if (no_needToCheckDirection(dir, currentIndex) || no_needToCheckDirection(dir, secondIndex))
+		return false;
+
+	Gem &nextGem = at(nextIndex);
+	Gem &secondGem = at(secondIndex);
+
+	if (nextGem.forDestruction || secondGem.forDestruction)
+		return false;
+	else if (currentGem.type != nextGem.type || currentGem.type != secondGem.type)
+		return false;
+
+	// we found 3-gems match!
+	forDestroy.push_back(&currentGem);
+	forDestroy.push_back(&nextGem);
+	forDestroy.push_back(&secondGem);
+
+	currentGem.markForDestruction();
+	nextGem.markForDestruction();
+	secondGem.markForDestruction();
+
+	checkNextCell(dir, secondGem, secondIndex);
+	return true;
+}
+
 void BoardData::checkNextCell(Direction & dir, Gem & currentGem, const BoardIndex & currentIndex)
 {
-	// direction and boardIndex is aliases for Vector2i. So we just add direction vector to index vector
+	if (no_needToCheckDirection(dir, currentIndex))
+		return;
+
 	BoardIndex nextIndex = currentIndex + dir.vector;
 	Gem &nextGem = at(nextIndex);
 
-	if (no_needToCheckDirection(dir, nextIndex))
+	if (nextGem.forDestruction || currentGem.type != nextGem.type)
 		return;
 
-	if (currentGem.type != nextGem.type || nextGem.forDestruction)
-		return;
-
-	dir.detectedBlocks += 1;
-
-	if (dir.detectedBlocks == 3) {
-		BoardIndex prevIndex = (currentIndex + (-dir.vector));
-		Gem &prevGem = at(prevIndex);
-		// TODO: Create new Match and match.push_back;
-		forDestroy.push_back(&currentGem);
-		forDestroy.push_back(&prevGem);
-		forDestroy.push_back(&nextGem);
-
-		currentGem.markForDestruction();
-		prevGem.markForDestruction();
-		nextGem.markForDestruction();
-	} 
-	else if (dir.detectedBlocks > 3) {
-		forDestroy.push_back(&nextGem);
-		nextGem.markForDestruction();
-	}
+	forDestroy.push_back(&nextGem);
+	nextGem.markForDestruction();
 
 	checkNextCell(dir, nextGem, nextIndex);
 }
+
 
 void BoardData::performDestroy()
 {
@@ -156,18 +162,6 @@ void BoardData::performDestroy()
 	}
 
 	forDestroy.clear();
-
-	//for (int row = 0; row < ROWS; row++)
-	//{
-	//	for (int col = 0; col < COLS; col++)
-	//	{
-	//		Gem & gem = at(row, col);
-	//		if (gem.forDestruction) {
-	//			std::cout << "calling destroy on gem " << (int)gem.type << std::endl;
-	//			gem.destroy();
-	//		}
-	//	}
-	//}
 }
 
 void BoardData::update()

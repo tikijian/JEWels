@@ -20,6 +20,7 @@ class BoardData : public sf::Drawable {
 	int detectedBlocks = 1;
 
 	void checkNextCell(Direction&, Gem&, const BoardIndex&);
+	bool checkMatchThree(Direction&, Gem&, const BoardIndex&);
 	void performDestroy();
 public:
 	BoardData();
