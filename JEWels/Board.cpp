@@ -45,6 +45,8 @@ void Board::processInput(const Event& event)
 		break;
 	case Keyboard::Space:
 		block.cycle();
+	case Keyboard::Up:
+		block.cycle();
 	default:
 		break;
 	}

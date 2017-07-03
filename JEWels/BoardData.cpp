@@ -104,7 +104,7 @@ bool BoardData::checkMatchThree(Direction & dir, Gem & currentGem, const BoardIn
 	BoardIndex nextIndex = currentIndex + dir.vector;
 	BoardIndex secondIndex = nextIndex + dir.vector;
 
-	if (no_needToCheckDirection(dir, currentIndex) || no_needToCheckDirection(dir, secondIndex))
+	if (no_needToCheckDirection(dir, currentIndex) || no_needToCheckDirection(dir, nextIndex))
 		return false;
 
 	Gem &nextGem = at(nextIndex);
@@ -174,8 +174,8 @@ bool no_needToCheckDirection(const Direction & dir, const BoardIndex & gemIndex)
 	return
 		gemIndex.x == 0 && dir.vector.x < 0 ||
 		gemIndex.x == (ROWS - 1) && dir.vector.x > 0 ||
-		gemIndex.y == 0 && dir.vector.y < 0 ||
-		gemIndex.y == (COLS - 1) && dir.vector.y > 0;
+		gemIndex.y == (COLS - 1) && dir.vector.y > 0 ||
+		gemIndex.y == 0 && dir.vector.y < 0;
 }
 
 BoardData::~BoardData()
