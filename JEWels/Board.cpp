@@ -7,6 +7,7 @@ using namespace helpers;
 
 const Vector2f startPosition(390.0f, 65.0f);
 const int FALL_SPEED = 30;
+const int SCORE_PER_GEM = 10;
 
 Board::Board():
 	board(false) // add (true) for debug fill
@@ -61,8 +62,12 @@ void Board::update(const Time & dt)
 		} else {
 			commitBlock();
 			resetBlock();
-			score += 15;
 			board.update();
+			
+			if (board.getDetectedBlocks() > 0) {
+				score += board.getDetectedBlocks() * SCORE_PER_GEM;
+				board.resetDetectedCounter();
+			}
 		}
 			
 		stepTime = 0;

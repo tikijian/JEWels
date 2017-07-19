@@ -149,7 +149,6 @@ void BoardData::checkNextCell(Direction & dir, Gem & currentGem, const BoardInde
 void BoardData::performDestroy()
 {
 	int forDestroySize = forDestroy.size();
-	std::cout << "forDestroy size  = " << forDestroySize << std::endl;
 
 	std::vector<Gem*>::iterator it;
 	for (it = forDestroy.begin(); it != forDestroy.end(); it++) {
@@ -158,9 +157,14 @@ void BoardData::performDestroy()
 			gem->destroy();
 		else
 			gem->forDestruction = false;
+
+		detectedBlocks++;
 	}
 
 	forDestroy.clear();
+
+	if (detectedBlocks < 3)
+		detectedBlocks = 0;
 }
 
 void BoardData::update()

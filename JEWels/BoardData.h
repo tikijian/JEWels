@@ -11,13 +11,12 @@ typedef sf::Vector2i BoardIndex;
 struct Direction {
 	Direction(int x, int y) { vector.x = x; vector.y = y; }
 	sf::Vector2i vector;
-	int detectedBlocks = 0;
 };
 
 class BoardData : public sf::Drawable {
 	Gem data[Constants::ROWS][Constants::COLS];
 	std::vector<Gem*> forDestroy; // COLS * ROWS = 221
-	int detectedBlocks = 1;
+	int detectedBlocks = 0;
 
 	void checkNextCell(Direction&, Gem&, const BoardIndex&);
 	bool checkMatchThree(Direction&, Gem&, const BoardIndex&);
@@ -34,6 +33,8 @@ public:
 	void reset();
 	void update();
 	void checkMatches();
+	void resetDetectedCounter() { detectedBlocks = 0; }
+	int getDetectedBlocks() { return detectedBlocks; }
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const;
 };
