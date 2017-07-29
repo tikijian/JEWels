@@ -68,6 +68,16 @@ void BoardData::set(GemType type, const BoardIndex& index)
 	at(index).setType(type);
 }
 
+void BoardData::moveGem(BoardIndex& gemIndex, int offset)
+{
+	if (offset < 1) return;
+
+	Gem& gem = at(gemIndex);
+	GemType type = gem.type;
+	gem.type = GemType::Empty;
+	set(type, gemIndex.x, gemIndex.y + offset);
+}
+
 void BoardData::draw(RenderTarget & target, RenderStates states) const
 {
 	for (int row = 0; row < ROWS; row++)
@@ -167,10 +177,53 @@ void BoardData::performDestroy()
 		detectedBlocks = 0;
 }
 
+void BoardData::performFalling()
+{
+	
+	for (int row = 0; row < ROWS; row++)
+	{
+		int emptyBlocks = 0, blocks = 0;
+		int startIndex, endIndex;
+
+		// going from bottom to top this time
+		for (int col = COLS-1; col > 0; col--)
+		{
+			Gem& currentGem = at(row, col);
+			Gem& nextGem = at(row, col-1); // block ABOVE current
+
+			// skip, if this is not empty block but it should not fall
+			if (emptyBlocks == 0 && !currentGem.isEmpty())
+				continue;
+
+			if (!currentGem.isEmpty()) {
+				blocks++;
+				if (blocks == 1) {
+					startIndex = col;
+				}
+			}
+			else {
+				emptyBlocks++;
+			}
+
+			if (nextGem.isEmpty() && blocks > 0) {
+				endIndex = col;
+				break;
+			}
+		}
+
+		if (blocks == 0) continue;
+
+		for (int i = 0; i < blocks; i++) {
+			moveGem(BoardIndex(row, startIndex - i), emptyBlocks);
+		}
+	}
+}
+
 void BoardData::update()
 {
 	checkMatches();
 	performDestroy();
+	performFalling();
 }
 
 // Some helper functions for decomposition

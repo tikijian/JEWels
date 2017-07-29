@@ -33,8 +33,10 @@ public:
 	void reset();
 	void update();
 	void checkMatches();
+	void performFalling();
 	void resetDetectedCounter() { detectedBlocks = 0; }
 	int getDetectedBlocks() { return detectedBlocks; }
+	void moveGem(BoardIndex&, int offset);
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const;
 };
