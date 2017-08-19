@@ -57,40 +57,79 @@ void Board::processInput(const Event& event)
 void Board::update(const Time & dt)
 {
 	stepTime += dt.asMilliseconds();
-	if (stepTime >= stepDuration) {
-		if (canMoveBottom()) {
-			block.move(Vector2f(.0f, GEMSIZE));
-		} else {
-			commitBlock();
-			block.reset();
-			boardData.update();
-		}
-		stepTime = 0;
+
+	switch (state)
+	{
+	case GameState::Playing:
+		playingLogic();
+		break;
+	case GameState::BoardUpdate:
+		boardUpdateLogic();
+		break;
+	case GameState::Falling:
+		fallingLogic();
+		break;
+	case GameState::Destroying:
+		destructionLogic();
+		break;
 	}
 
 	updateScore();
 	block.update(dt);
 }
 
-void Board::draw(RenderTarget & target, RenderStates states) const
+/////////////////////////////////////////
+// States logic
+/////////////////////////////////////////
+
+void Board::playingLogic() 
 {
-	target.draw(rect);
-	target.draw(score);
-	target.draw(boardData);
-	target.draw(block);
+	if (stepTime >= stepDuration) {
+		if (canMoveBottom()) {
+			block.move(Vector2f(.0f, GEMSIZE));
+		} else {
+			setState(GameState::BoardUpdate);
+		}
+		stepTime = 0;
+	}
 }
 
+void Board::fallingLogic()
+{
+	if (stepTime >= stepDuration) {
+		if (canMoveBottom()) {
+			block.move(Vector2f(.0f, GEMSIZE));
+		} else {
+			setState(GameState::BoardUpdate);
+			stepDuration = lastKnownStepDuration; // restore falling speed when fall process is ended
+		}
+		stepTime = 0;
+	}
+}
+
+void Board::boardUpdateLogic()
+{
+	commitBlock();
+	block.reset();
+	boardData.update();
+	setState(GameState::Playing);
+}
+
+void Board::destructionLogic()
+{
+
+}
+
+
+//////////////////////////////////////////
+// utility methods
+//////////////////////////////////////////
 void Board::commitBlock()
 {
 	Gem* const gems = block.gems;
 	for (int i = 0; i <= 2; i++) {
 		Vector2i index = getBoardIndex(gems[i].getPosition());
 		boardData.set(gems[i].type, index);
-	}
-
-	if (state == GameState::Falling) {
-		stepDuration = lastKnownStepDuration; // restore falling speed when fall process is ended
-		setState(GameState::Playing);
 	}
 }
 
@@ -159,4 +198,12 @@ bool Board::canMoveRight()
 	}
 	
 	return canMove;
+}
+
+void Board::draw(RenderTarget & target, RenderStates states) const
+{
+	target.draw(rect);
+	target.draw(score);
+	target.draw(boardData);
+	target.draw(block);
 }

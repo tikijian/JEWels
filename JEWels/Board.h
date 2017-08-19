@@ -24,6 +24,11 @@ class Board : public sf::Drawable
 	void commitBlock();
 	void updateScore();
 
+	void playingLogic();
+	void destructionLogic();
+	void boardUpdateLogic();
+	void fallingLogic();
+
 public:
 	Board();
 	~Board();
