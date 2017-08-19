@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 #include "GemTypes.h"
+#include "GameStates.h"
 #include "Gem.h"
 #include "Block.h"
 #include "Constants.h"
@@ -12,6 +13,17 @@ using namespace sf;
 
 class Board : public sf::Drawable
 {
+	int stepTime = 0;
+	int stepDuration = 800;
+	int lastKnownStepDuration = stepDuration;
+	GameState state = GameState::Playing;
+
+	bool canMoveBottom();
+	bool canMoveLeft();
+	bool canMoveRight();
+	void commitBlock();
+	void updateScore();
+
 public:
 	Board();
 	~Board();
@@ -19,22 +31,14 @@ public:
 	sf::RectangleShape rect;
 	Block block;
 	Score score;
-	BoardData board;
+	BoardData boardData;
 
 	void update(const Time &dt);
-	void resetBoard() { board.reset(); };
+	void resetBoard() { boardData.reset(); };
 	void processInput(const sf::Event& event);
-	virtual void draw(RenderTarget & target, RenderStates states) const;
-private:
-	int stepTime = 0;
-	int stepDuration = 800;
-	int lastKnownStepDuration = stepDuration;
-	bool canStep = true;
+	void setState(GameState s) { state = s; }
+	GameState getState() { return state; }
 
-	bool canMoveBottom();
-	bool canMoveLeft();
-	bool canMoveRight();
-	void commitBlock();
-	void resetBlock();
+	virtual void draw(RenderTarget & target, RenderStates states) const;
 };
 

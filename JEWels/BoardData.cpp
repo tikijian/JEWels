@@ -8,17 +8,11 @@ using namespace Constants;
 using namespace helpers;
 
 Direction directions[4] = {
-	//Direction(0, -1), // ↑
 	Direction(1, -1), // ↗
 	Direction(1, 0),  // →
 	Direction(1, 1),  // ↘
 	Direction(0, 1),  // ↓
-	//Direction(-1, 1), // ↙ 
-	//Direction(-1, 0), // ←
-	//Direction(-1, -1),// ↖ 
 };
-
-bool no_needToCheckDirection(const Direction&, const BoardIndex&);
 
 BoardData::BoardData()
 {
@@ -227,7 +221,7 @@ void BoardData::update()
 }
 
 // Some helper functions for decomposition
-bool no_needToCheckDirection(const Direction & dir, const BoardIndex & gemIndex) {
+bool BoardData::no_needToCheckDirection(const Direction & dir, const BoardIndex & gemIndex) {
 	return
 		gemIndex.x == 0 && dir.vector.x < 0 ||
 		gemIndex.x == (ROWS - 1) && dir.vector.x > 0 ||

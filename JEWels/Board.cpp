@@ -5,12 +5,11 @@ using namespace sf;
 using namespace Constants;
 using namespace helpers;
 
-const Vector2f startPosition(390.0f, 65.0f);
 const int FALL_SPEED = 30;
 const int SCORE_PER_GEM = 10;
 
 Board::Board():
-	board(false) // add (true) for debug fill
+	boardData(false) // add (true) for debug fill
 {
 	rect.setFillColor(Color::Transparent);
 	rect.setSize(BOARDSIZE);
@@ -18,7 +17,7 @@ Board::Board():
 	rect.setOutlineThickness(2.0f);
 	rect.setPosition(TOPLEFT);
 
-	block.setPosition(startPosition);
+	block.reset();
 }
 
 Board::~Board()
@@ -27,6 +26,8 @@ Board::~Board()
 
 void Board::processInput(const Event& event)
 {
+	if (state != GameState::Playing) return;
+
 	switch (event.key.code)
 	{
 	case Keyboard::Left:
@@ -39,15 +40,15 @@ void Board::processInput(const Event& event)
 		break;
 	case Keyboard::Down:
 		// speed up falling speed on DOWN
-		if (block.isFalling) break;
-		block.isFalling = true;
+		if (state == GameState::Falling) break;
+		setState(GameState::Falling);
 		lastKnownStepDuration = stepDuration;
 		stepDuration = FALL_SPEED;
 		break;
 	case Keyboard::Space:
-		block.cycle();
 	case Keyboard::Up:
 		block.cycle();
+		break;
 	default:
 		break;
 	}
@@ -61,18 +62,13 @@ void Board::update(const Time & dt)
 			block.move(Vector2f(.0f, GEMSIZE));
 		} else {
 			commitBlock();
-			resetBlock();
-			board.update();
-			
-			if (board.getDetectedBlocks() > 0) {
-				score += board.getDetectedBlocks() * SCORE_PER_GEM;
-				board.resetDetectedCounter();
-			}
+			block.reset();
+			boardData.update();
 		}
-			
 		stepTime = 0;
 	}
 
+	updateScore();
 	block.update(dt);
 }
 
@@ -80,14 +76,8 @@ void Board::draw(RenderTarget & target, RenderStates states) const
 {
 	target.draw(rect);
 	target.draw(score);
-	target.draw(board);
+	target.draw(boardData);
 	target.draw(block);
-}
-
-void Board::resetBlock()
-{
-	block.setPosition(startPosition);
-	block.resetGems();
 }
 
 void Board::commitBlock()
@@ -95,12 +85,20 @@ void Board::commitBlock()
 	Gem* const gems = block.gems;
 	for (int i = 0; i <= 2; i++) {
 		Vector2i index = getBoardIndex(gems[i].getPosition());
-		board.set(gems[i].type, index);
+		boardData.set(gems[i].type, index);
 	}
 
-	if (block.isFalling) {
-		block.isFalling = false;
+	if (state == GameState::Falling) {
 		stepDuration = lastKnownStepDuration; // restore falling speed when fall process is ended
+		setState(GameState::Playing);
+	}
+}
+
+void Board::updateScore() {
+	int detectedBlocks = boardData.getDetectedBlocks();
+	if (detectedBlocks > 0) {
+		score += detectedBlocks * SCORE_PER_GEM;
+		boardData.resetDetectedCounter();
 	}
 }
 
@@ -112,18 +110,11 @@ bool Board::canMoveBottom()
 		return false;
 	
 	Vector2i bottomCell = getBoardIndex(Vector2f(xPos, offsetYPos));
-	if (board.at(bottomCell) == GemType::Empty) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	return boardData.at(bottomCell) == GemType::Empty;
 }
 
 bool Board::canMoveLeft()
 {
-	if (block.isFalling) return false;
-
 	float xPos = block.getPosition().x;
 	float yPos = block.getPosition().y;
 	if (xPos <= TOPLEFT.x)
@@ -137,7 +128,7 @@ bool Board::canMoveLeft()
 	{
 		float leftCellY = yPos + (offsetY * GEMSIZE);
 		Vector2i targetCell = getBoardIndex(Vector2f(leftCellX, leftCellY));
-		if (board.at(targetCell) != GemType::Empty) {
+		if (boardData.at(targetCell) != GemType::Empty) {
 			canMove = false;
 			break;
 		}
@@ -148,8 +139,6 @@ bool Board::canMoveLeft()
 
 bool Board::canMoveRight()
 {
-	if (block.isFalling) return false;
-
 	float xPos = block.getPosition().x;
 	float yPos = block.getPosition().y;
 	if (xPos >= (BOTTOMRIGHT.x - GEMSIZE))
@@ -163,7 +152,7 @@ bool Board::canMoveRight()
 	{
 		float rightCellY = yPos + (offsetY * GEMSIZE);
 		Vector2i targetCell = getBoardIndex(Vector2f(rightCellX, rightCellY));
-		if (board.at(targetCell) != GemType::Empty) {
+		if (boardData.at(targetCell) != GemType::Empty) {
 			canMove = false;
 			break;
 		}

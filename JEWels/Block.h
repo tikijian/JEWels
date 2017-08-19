@@ -6,6 +6,8 @@
 
 class Block : public sf::RectangleShape
 {
+	void updateGems();
+	void resetGems();
 public:
 	Block();
 	~Block();
@@ -15,8 +17,6 @@ public:
 	void update(const sf::Time& dt);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void cycle();
-	void resetGems();
-private: 
-	void updateGems();
+	void reset();
 };
 

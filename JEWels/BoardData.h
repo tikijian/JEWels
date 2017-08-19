@@ -21,6 +21,8 @@ class BoardData : public sf::Drawable {
 	void checkNextCell(Direction&, Gem&, const BoardIndex&);
 	bool checkMatchThree(Direction&, Gem&, const BoardIndex&);
 	void performDestroy();
+
+	static bool no_needToCheckDirection(const Direction&, const BoardIndex&);
 public:
 	BoardData();
 	BoardData(bool debug = false);

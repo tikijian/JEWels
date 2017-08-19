@@ -150,6 +150,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardData.h" />
+    <ClInclude Include="GameStates.h" />
     <ClInclude Include="Gem.h" />
     <ClInclude Include="GemTypes.h" />
     <ClInclude Include="Constants.h" />

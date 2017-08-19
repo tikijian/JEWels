@@ -5,6 +5,7 @@
 
 class Gem : public sf::Drawable
 {
+	void setColor(GemType t);
 
 public:
 	Gem();
@@ -25,8 +26,5 @@ public:
 
 	bool operator==(GemType t) { return type == t; }
 	bool operator!=(GemType t) { return type != t; }
-private:
-	void setColor(GemType t);
-
 };
 
