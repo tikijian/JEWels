@@ -13,7 +13,8 @@ public:
 	~Block();
 
 	Gem gems[3];
-	bool isFalling = false;
+	bool isHidden = false;
+	void hide();
 	void update(const sf::Time& dt);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void cycle();

@@ -13,8 +13,10 @@ using namespace sf;
 
 class Board : public sf::Drawable
 {
-	int stepTime = 0;
+	int gameTime = 0;
 	int stepDuration = 800;
+	int destroyDelay = 200;
+	int fallDelay = 200;
 	int lastKnownStepDuration = stepDuration;
 	GameState state = GameState::Playing;
 
@@ -25,6 +27,7 @@ class Board : public sf::Drawable
 	void updateScore();
 
 	void playingLogic();
+	void blockDropLogic();
 	void destructionLogic();
 	void boardUpdateLogic();
 	void fallingLogic();

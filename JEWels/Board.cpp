@@ -40,8 +40,7 @@ void Board::processInput(const Event& event)
 		break;
 	case Keyboard::Down:
 		// speed up falling speed on DOWN
-		if (state == GameState::Falling) break;
-		setState(GameState::Falling);
+		setState(GameState::BlockDrop);
 		lastKnownStepDuration = stepDuration;
 		stepDuration = FALL_SPEED;
 		break;
@@ -56,12 +55,15 @@ void Board::processInput(const Event& event)
 
 void Board::update(const Time & dt)
 {
-	stepTime += dt.asMilliseconds();
+	gameTime += dt.asMilliseconds();
 
 	switch (state)
 	{
 	case GameState::Playing:
 		playingLogic();
+		break;
+	case GameState::BlockDrop:
+		blockDropLogic();
 		break;
 	case GameState::BoardUpdate:
 		boardUpdateLogic();
@@ -84,40 +86,72 @@ void Board::update(const Time & dt)
 
 void Board::playingLogic() 
 {
-	if (stepTime >= stepDuration) {
+	if (gameTime >= stepDuration) {
 		if (canMoveBottom()) {
 			block.move(Vector2f(.0f, GEMSIZE));
 		} else {
+			commitBlock();
 			setState(GameState::BoardUpdate);
 		}
-		stepTime = 0;
+		gameTime = 0;
 	}
 }
 
-void Board::fallingLogic()
+void Board::blockDropLogic()
 {
-	if (stepTime >= stepDuration) {
+	if (gameTime >= stepDuration) {
 		if (canMoveBottom()) {
 			block.move(Vector2f(.0f, GEMSIZE));
 		} else {
+			commitBlock();
 			setState(GameState::BoardUpdate);
 			stepDuration = lastKnownStepDuration; // restore falling speed when fall process is ended
 		}
-		stepTime = 0;
+		gameTime = 0;
 	}
 }
 
 void Board::boardUpdateLogic()
 {
-	commitBlock();
-	block.reset();
-	boardData.update();
-	setState(GameState::Playing);
+	bool matched = boardData.checkMatches();
+	if (matched) {
+		block.hide();
+		setState(GameState::Destroying);
+	}
+	else {
+		block.reset();
+		setState(GameState::Playing);
+	}
 }
 
 void Board::destructionLogic()
 {
+	if (gameTime > destroyDelay) {
+		bool isDestroyed = boardData.performDestroy();
+		if (isDestroyed) {
+			setState(GameState::Falling);
+		}
+		else {
+			block.reset();
+			setState(GameState::Playing);
+		}
+		gameTime = 0;
+	}
+}
 
+void Board::fallingLogic()
+{
+	if (gameTime > fallDelay) {
+		bool hasFallen = boardData.performFalling();
+		if (hasFallen) {
+			setState(GameState::BoardUpdate);
+		}
+		else {
+			block.reset();
+			setState(GameState::Playing);
+		}
+		gameTime = 0;
+	}
 }
 
 
@@ -134,7 +168,7 @@ void Board::commitBlock()
 }
 
 void Board::updateScore() {
-	int detectedBlocks = boardData.getDetectedBlocks();
+	int detectedBlocks = boardData.getDetectedCounter();
 	if (detectedBlocks > 0) {
 		score += detectedBlocks * SCORE_PER_GEM;
 		boardData.resetDetectedCounter();

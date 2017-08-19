@@ -39,11 +39,18 @@ void Block::resetGems()
 
 void Block::reset()
 {
+	isHidden = false;
 	setPosition(startPosition);
 	resetGems();
 }
 
-void Block::update(const Time& dt) 
+void Block::hide()
+{
+	isHidden = true;
+	setPosition(-100, -100);
+}
+
+void Block::update(const Time& dt)
 {
 	updateGems();
 }

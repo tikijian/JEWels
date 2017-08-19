@@ -83,7 +83,7 @@ void BoardData::draw(RenderTarget & target, RenderStates states) const
 	}
 }
 
-void BoardData::checkMatches()
+bool BoardData::checkMatches()
 {
 	for (int row = 0; row < ROWS; row++)
 	{
@@ -101,6 +101,8 @@ void BoardData::checkMatches()
 			}
 		}
 	}
+
+	return forDestroy.size() > 2;
 }
 
 bool BoardData::checkMatchThree(Direction & dir, Gem & currentGem, const BoardIndex & currentIndex) {
@@ -150,9 +152,10 @@ void BoardData::checkNextCell(Direction & dir, Gem & currentGem, const BoardInde
 }
 
 
-void BoardData::performDestroy()
+bool BoardData::performDestroy()
 {
 	int forDestroySize = forDestroy.size();
+	bool isDestroyed = false;
 
 	std::vector<Gem*>::iterator it;
 	for (it = forDestroy.begin(); it != forDestroy.end(); it++) {
@@ -167,13 +170,17 @@ void BoardData::performDestroy()
 
 	forDestroy.clear();
 
-	if (detectedBlocks < 3)
+	if (detectedBlocks > 2)
+		isDestroyed = true;
+	else
 		detectedBlocks = 0;
+	
+	return isDestroyed;
 }
 
-void BoardData::performFalling()
+bool BoardData::performFalling()
 {
-	
+	bool hasFallen = false;
 	for (int row = 0; row < ROWS; row++)
 	{
 		int emptyBlocks = 0, blocks = 0;
@@ -210,17 +217,11 @@ void BoardData::performFalling()
 		for (int i = 0; i < blocks; i++) {
 			moveGem(BoardIndex(row, startIndex - i), emptyBlocks);
 		}
+		hasFallen = true;
 	}
+	return hasFallen;
 }
 
-void BoardData::update()
-{
-	checkMatches();
-	performDestroy();
-	performFalling();
-}
-
-// Some helper functions for decomposition
 bool BoardData::no_needToCheckDirection(const Direction & dir, const BoardIndex & gemIndex) {
 	return
 		gemIndex.x == 0 && dir.vector.x < 0 ||

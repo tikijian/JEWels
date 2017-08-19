@@ -20,7 +20,7 @@ class BoardData : public sf::Drawable {
 
 	void checkNextCell(Direction&, Gem&, const BoardIndex&);
 	bool checkMatchThree(Direction&, Gem&, const BoardIndex&);
-	void performDestroy();
+	void moveGem(BoardIndex&, int offset);
 
 	static bool no_needToCheckDirection(const Direction&, const BoardIndex&);
 public:
@@ -33,12 +33,11 @@ public:
 	void set(GemType t, int x, int y);
 	void set(GemType t, const BoardIndex & index);
 	void reset();
-	void update();
-	void checkMatches();
-	void performFalling();
+	bool checkMatches();
+	bool performDestroy();
+	bool performFalling();
 	void resetDetectedCounter() { detectedBlocks = 0; }
-	int getDetectedBlocks() { return detectedBlocks; }
-	void moveGem(BoardIndex&, int offset);
+	int getDetectedCounter() { return detectedBlocks; }
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const;
 };
