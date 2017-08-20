@@ -18,6 +18,15 @@ Board::Board():
 	rect.setPosition(TOPLEFT);
 
 	block.reset();
+
+	dropSoundBuffer.loadFromFile("sounds/drop.wav");
+	cycleSoundBuffer.loadFromFile("sounds/cycle.wav");
+	destroySoundBuffer.loadFromFile("sounds/destroy.wav");
+	fallSoundBuffer.loadFromFile("sounds/fall.wav");
+	dropSound.setBuffer(dropSoundBuffer);
+	cycleSound.setBuffer(cycleSoundBuffer);
+	destroySound.setBuffer(destroySoundBuffer);
+	fallSound.setBuffer(fallSoundBuffer);
 }
 
 Board::~Board()
@@ -47,6 +56,7 @@ void Board::processInput(const Event& event)
 	case Keyboard::Space:
 	case Keyboard::Up:
 		block.cycle();
+		cycleSound.play();
 		break;
 	default:
 		break;
@@ -104,6 +114,7 @@ void Board::blockDropLogic()
 			block.move(Vector2f(.0f, GEMSIZE));
 		} else {
 			commitBlock();
+			dropSound.play();
 			setState(GameState::BoardUpdate);
 			stepDuration = lastKnownStepDuration; // restore falling speed when fall process is ended
 		}
@@ -128,6 +139,7 @@ void Board::destructionLogic()
 {
 	if (gameTime > destroyDelay) {
 		bool isDestroyed = boardData.performDestroy();
+		destroySound.play();
 		if (isDestroyed) {
 			setState(GameState::Falling);
 		}
@@ -143,6 +155,7 @@ void Board::fallingLogic()
 {
 	if (gameTime > fallDelay) {
 		bool hasFallen = boardData.performFalling();
+		fallSound.play();
 		if (hasFallen) {
 			setState(GameState::BoardUpdate);
 		}

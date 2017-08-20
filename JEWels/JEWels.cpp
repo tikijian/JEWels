@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include "TextureManager.h"
 #include "Board.h"
 #include "Score.h"
@@ -24,6 +25,12 @@ int main()
 	sprJew.setTexture(tm.get("jew.png"));
 	sprJew.setPosition(35, 50);
 	sprJew.setScale(0.3f, 0.3f);
+
+	sf::Music music;
+	if (!music.openFromFile("sounds/nagila.ogg"))
+		return -1; // error
+	music.setLoop(true);
+	music.play();
 
 	Board board;	
 

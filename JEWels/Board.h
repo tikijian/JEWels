@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include "GemTypes.h"
 #include "GameStates.h"
 #include "Gem.h"
@@ -19,6 +20,15 @@ class Board : public sf::Drawable
 	int fallDelay = 200;
 	int lastKnownStepDuration = stepDuration;
 	GameState state = GameState::Playing;
+
+	SoundBuffer dropSoundBuffer;
+	SoundBuffer cycleSoundBuffer;
+	SoundBuffer destroySoundBuffer;
+	SoundBuffer fallSoundBuffer;
+	Sound dropSound;
+	Sound cycleSound;
+	Sound destroySound;
+	Sound fallSound;
 
 	bool canMoveBottom();
 	bool canMoveLeft();
